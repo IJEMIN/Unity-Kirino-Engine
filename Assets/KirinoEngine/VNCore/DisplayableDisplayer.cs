@@ -8,6 +8,8 @@ public class DisplayableDisplayer : MonoBehaviour {
 
 	public CanvasGroup displayablesHolder;
 
+	public List<ScriptableObject> currentDisplayables;
+
 	public void HideImage()
 	{
 		StartCoroutine("Hide");

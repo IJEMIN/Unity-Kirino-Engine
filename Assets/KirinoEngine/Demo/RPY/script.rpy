@@ -1,11 +1,3 @@
-# The script of the game goes in this file.
-
-# Declare characters used by this game. The color argument colorizes the
-# name of the character.
-
-define e = "Eileen"
-
-
 # The game starts here.
 
 label start:
@@ -22,6 +14,8 @@ label start:
     # These display lines of dialogue.
 
     "Hello, world."
+
+    scene "bg_road"
 
     e "You've created a new Ren'Py game."
 

@@ -60,4 +60,5 @@ public class VNLocator
             return m_backgroundDisplayable;
         }
     }
+
 }

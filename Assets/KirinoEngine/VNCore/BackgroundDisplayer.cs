@@ -18,7 +18,7 @@ public class BackgroundDisplayer : MonoBehaviour {
 
 	public void ChangeBackground(Sprite newBackground)
 	{
-		VNLocator.displayableDisplayer.HideImage();
+//		VNLocator.displayableDisplayer.HideImage();
 		VNLocator.textDisplayer.HideDialogueHolder();
 
 		StopCoroutine("SwitchBackgroundSprite");
