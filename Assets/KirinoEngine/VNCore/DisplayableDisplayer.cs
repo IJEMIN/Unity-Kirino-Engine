@@ -56,10 +56,21 @@ public class DisplayableDisplayer : MonoBehaviour {
 	{
 		yield return null;
 	}
-
-	private IEnumerator Hide()
+	public void Hide(string key)
 	{
-		yield return null;
+		Destroy(images[key].gameObject);
+
+		currentDisplayables.Remove(key);
+		images.Remove(key);
+	}
+
+	public void HideAll()
+	{
+		foreach(var currentDisplayabe in currentDisplayables)
+		{
+			//meno: it's a KeyValuePair's key, not a key of Displayable.
+			Hide(currentDisplayabe.Key);
+		}
 	}
 
 
