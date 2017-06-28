@@ -15,5 +15,8 @@ public class Displayable : ScriptableObject
 		}
 	}
 
+	// replace prviouse displayable as showing new displayable with same tag
+	public string tag;
+
     public Sprite sprite;
 }

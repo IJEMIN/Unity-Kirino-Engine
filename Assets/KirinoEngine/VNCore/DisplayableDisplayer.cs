@@ -8,16 +8,48 @@ public class DisplayableDisplayer : MonoBehaviour {
 
 	public CanvasGroup displayablesHolder;
 
-	public List<ScriptableObject> currentDisplayables;
+	// key: tag of displayable. when tag is empty, Displayable.key is key of dictionary.
+	// for replacing if two different displayables has same tag. mostly for face replacing.
+	// example: tag: kirino, key: kirino_angry  and tag: kirino, key: kirino_happy
+	public Dictionary<string,ScriptableObject> currentDisplayables = new Dictionary<string,ScriptableObject>();
+	public Dictionary<string,Image> images = new Dictionary<string,Image>();
 
-	public void HideImage()
+	public void Show(Displayable displayable)
 	{
-		StartCoroutine("Hide");
+		if(string.IsNullOrEmpty(displayable.tag))
+		{
+			currentDisplayables.Add(displayable.key,displayable);
+			AddImage(displayable.key,displayable.sprite);
+		}
+		else
+		{
+			// there is already image which have same tag
+			if(currentDisplayables.ContainsKey(displayable.tag))
+			{
+				currentDisplayables[displayable.tag] = displayable;
+				ReplaceImage(displayable.tag,displayable.sprite);
+			}
+			else
+			{
+				AddImage(displayable.tag,displayable.sprite);
+			}
+		}
 	}
 
-	public void DrawImage(Sprite sprite)
+	private void AddImage(string key, Sprite sprite)
 	{
+		var image = new GameObject(key).AddComponent<Image>();
+		image.sprite = sprite;
+		image.transform.SetParent(displayablesHolder.transform);
 
+		image.transform.localScale = Vector3.one;
+		image.SetNativeSize();
+		image.rectTransform.anchoredPosition = Vector2.zero;
+	}
+
+	private void ReplaceImage(string key, Sprite sprite)
+	{
+		images[key].sprite = sprite;
 	}
 
 	private IEnumerator Show()
