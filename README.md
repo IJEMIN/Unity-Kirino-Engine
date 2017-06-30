@@ -1,7 +1,7 @@
 # Unity3D-Kirino-Engine
 Kirino Engine is Framework for Developing Visual Novel Style games in Unity3D.
 
-Kirino Engine use RenPy syntax to control core modules.
+Kirino Engine use custom script to control core modules.
 
 This framework is independent version of some source codes used in [this game](https://play.google.com/store/apps/details?id=com.applemint.deregirl&hl=ko)
 
