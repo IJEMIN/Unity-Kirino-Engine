@@ -8,38 +8,42 @@ public class DisplayableDisplayer : MonoBehaviour {
 
 	public CanvasGroup displayablesHolder;
 
-	// key: tag of displayable. when tag is empty, Displayable.key is key of dictionary.
-	// for replacing if two different displayables has same tag. mostly for face replacing.
-	// example: tag: kirino, key: kirino_angry  and tag: kirino, key: kirino_happy
-	public Dictionary<string,ScriptableObject> currentDisplayables = new Dictionary<string,ScriptableObject>();
+	// key: displayable unique (it automatically defined as filename)
+	// tag: tag define shared base between many displayable.
+
+	// Replace exist image (mostly for face replacing) require both key and tag
+
+	// exampale:
+	// tag: kirino, key: kirino_angry  and tag: kirino, key: kirino_happy
+	// show kirino_happy will replace kirino_angry (if it alreay exists);
+	
+	// Replaceing only happening between images which have same tag with diffrent key
+
+	// dic key : tag of displayable
 	public Dictionary<string,Image> images = new Dictionary<string,Image>();
 
 	public void Show(Displayable displayable)
 	{
+		// if tag is not defined, use key as tag
 		if(string.IsNullOrEmpty(displayable.tag))
 		{
-			currentDisplayables.Add(displayable.key,displayable);
 			AddImage(displayable.key,displayable.sprite);
+			return;
+		}
+
+		if(images.ContainsKey(displayable.tag))
+		{
+			ReplaceImage(displayable.tag,displayable.sprite);
 		}
 		else
 		{
-			// there is already image which have same tag
-			if(currentDisplayables.ContainsKey(displayable.tag))
-			{
-				currentDisplayables[displayable.tag] = displayable;
-                ReplaceImage(displayable.tag,displayable.sprite);
-			}
-			else
-			{
-                currentDisplayables.Add(displayable.tag, displayable);
-				AddImage(displayable.tag,displayable.sprite);
-			}
+			AddImage(displayable.tag,displayable.sprite);
 		}
 	}
 
-	private void AddImage(string key, Sprite sprite)
+	private void AddImage(string tag, Sprite sprite)
 	{
-		var image = new GameObject(key).AddComponent<Image>();
+		var image = new GameObject(tag).AddComponent<Image>();
 		image.sprite = sprite;
 		image.transform.SetParent(displayablesHolder.transform);
 
@@ -47,32 +51,30 @@ public class DisplayableDisplayer : MonoBehaviour {
 		image.SetNativeSize();
 		image.rectTransform.anchoredPosition = Vector2.zero;
 
-        images.Add(key, image);
+        images.Add(tag, image);
 	}
 
-	private void ReplaceImage(string key, Sprite sprite)
+	private void ReplaceImage(string tag, Sprite sprite)
 	{
-		images[key].sprite = sprite;
+		images[tag].sprite = sprite;
 	}
 
 	private IEnumerator Show()
 	{
 		yield return null;
 	}
-	public void Hide(string key)
+	public void Hide(string tag)
 	{
-		Destroy(images[key].gameObject);
-
-		currentDisplayables.Remove(key);
-		images.Remove(key);
+		images.Remove(tag);
+		Destroy(images[tag].gameObject);
 	}
 
 	public void HideAll()
 	{
-		foreach(var currentDisplayable in currentDisplayables)
+		foreach(var imageTag in images.Keys)
 		{
 			//memo: it's a KeyValuePair's key, not a key of Displayable.
-			Hide(currentDisplayable.Key);
+			Hide(imageTag);
 		}
 	}
 }

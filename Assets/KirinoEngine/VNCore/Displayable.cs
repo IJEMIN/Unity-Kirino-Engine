@@ -5,17 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "displayable", menuName = "Empty Displayable", order = 1)]
 public class Displayable : ScriptableObject
 {
+	// key can't be duplicated
+    public string key{ get{return name;}}
 
-    public string key
-	{
-		get
-		{
-			//use scriptable object filename as key
-			return name;
-		}
-	}
-
-	// replace prviouse displayable as showing new displayable with same tag
+	// tag can be same throught many displayable
 	public string tag;
 
     public Sprite sprite;
