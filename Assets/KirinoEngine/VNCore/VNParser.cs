@@ -12,6 +12,8 @@ public class VNParser : MonoBehaviour {
 
 	const string syntax_background = "scene";
 	const string syntax_show = "show";
+    const string syntax_hide = "hide";
+
 
 	Script m_rpyScript;
 	void Start () {
@@ -68,6 +70,10 @@ public class VNParser : MonoBehaviour {
 				episode.AddCommand(new VNShow(VNDataContainer.Instance.GetDisplayable(line.Text)));
 				yield break;
 			break;
+            case syntax_hide:
+                episode.AddCommand(new VNHide(line.Text));
+                yield break;
+            break;
 		}
 
 
