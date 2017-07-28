@@ -27,10 +27,11 @@ public class DisplayableDisplayer : MonoBehaviour {
 			if(currentDisplayables.ContainsKey(displayable.tag))
 			{
 				currentDisplayables[displayable.tag] = displayable;
-				ReplaceImage(displayable.tag,displayable.sprite);
+                ReplaceImage(displayable.tag,displayable.sprite);
 			}
 			else
 			{
+                currentDisplayables.Add(displayable.tag, displayable);
 				AddImage(displayable.tag,displayable.sprite);
 			}
 		}
@@ -45,6 +46,8 @@ public class DisplayableDisplayer : MonoBehaviour {
 		image.transform.localScale = Vector3.one;
 		image.SetNativeSize();
 		image.rectTransform.anchoredPosition = Vector2.zero;
+
+        images.Add(key, image);
 	}
 
 	private void ReplaceImage(string key, Sprite sprite)
@@ -66,13 +69,10 @@ public class DisplayableDisplayer : MonoBehaviour {
 
 	public void HideAll()
 	{
-		foreach(var currentDisplayabe in currentDisplayables)
+		foreach(var currentDisplayable in currentDisplayables)
 		{
-			//meno: it's a KeyValuePair's key, not a key of Displayable.
-			Hide(currentDisplayabe.Key);
+			//memo: it's a KeyValuePair's key, not a key of Displayable.
+			Hide(currentDisplayable.Key);
 		}
 	}
-
-
-
 }
