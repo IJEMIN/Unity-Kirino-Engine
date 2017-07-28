@@ -13,6 +13,6 @@ public class VNBackground : VNCommand
     public override void Invoke()
     {
         VNLocator.backgroundDisplayable.ChangeBackground(displayable.sprite);
-		//todo: invoke command of current VNEpisode instance
+        VNLocator.currentEpisode.InvokeNextCommand();
     }
 }

@@ -32,10 +32,10 @@ public class VNEpisode : MonoBehaviour
     private void UnPause()
     {
         isPausing = false;
-        InvokeCommand();
+        InvokeNextCommand();
     }
 
-    public void InvokeCommand()
+    public void InvokeNextCommand()
     {
 
         if (isPausing)

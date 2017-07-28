@@ -11,7 +11,7 @@ public class VNParser : MonoBehaviour {
 	public VNEpisode episode;
 
 	const string syntax_background = "scene";
-	const string syntax_showCharacter = "show";
+	const string syntax_show = "show";
 
 	Script m_rpyScript;
 	void Start () {
@@ -56,10 +56,18 @@ public class VNParser : MonoBehaviour {
 		Debug.Log(line.Tag);
 		Debug.Log(line.Text);
 
-		if(line.Tag == syntax_background)
+
+		switch(line.Tag)
 		{
-			episode.AddCommand(new VNBackground(VNDataContainer.Instance.GetDisplayable(line.Text)));
-			yield break;
+			case syntax_background:
+				episode.AddCommand(new VNBackground(VNDataContainer.Instance.GetDisplayable(line.Text)));
+				yield break;
+			break;
+			
+			case syntax_show:
+				episode.AddCommand(new VNShow(VNDataContainer.Instance.GetDisplayable(line.Text)));
+				yield break;
+			break;
 		}
 
 

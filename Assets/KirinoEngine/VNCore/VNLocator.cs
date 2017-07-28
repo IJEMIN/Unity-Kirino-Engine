@@ -3,6 +3,21 @@ using System.Collections;
 
 public class VNLocator
 {
+    private static VNEpisode m_episode;
+    public static VNEpisode currentEpisode
+    {
+        get
+        {
+            if (!m_episode)
+            {
+                m_episode = GameObject.FindObjectOfType<VNEpisode>();
+            }
+
+            return m_episode;
+        }
+    }
+
+
     private static TextDisplayer m_textDisplayer;
     public static TextDisplayer textDisplayer
     {

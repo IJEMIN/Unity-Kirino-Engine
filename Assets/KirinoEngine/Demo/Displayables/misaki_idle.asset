@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2ef2761aeff24540bf329beb5628fc0, type: 3}
-  m_Name: Kohaku_Idle
+  m_Name: misaki_idle
   m_EditorClassIdentifier: 
-  tag: Kohaku
-  sprite: {fileID: 21300000, guid: a7a9e2942b8fc45f382904a60858d7d8, type: 3}
+  tag: misaki
+  sprite: {fileID: 21300000, guid: d1f42ba0b8b664c2b8fa3eb7e51ef579, type: 3}

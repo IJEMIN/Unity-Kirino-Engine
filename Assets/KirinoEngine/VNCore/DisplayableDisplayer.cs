@@ -65,16 +65,18 @@ public class DisplayableDisplayer : MonoBehaviour {
 	}
 	public void Hide(string tag)
 	{
+		var target = images[tag].gameObject;
 		images.Remove(tag);
-		Destroy(images[tag].gameObject);
+		Destroy(target);
 	}
 
 	public void HideAll()
 	{
 		foreach(var imageTag in images.Keys)
 		{
-			//memo: it's a KeyValuePair's key, not a key of Displayable.
-			Hide(imageTag);
+			Destroy(images[imageTag].gameObject);
 		}
+
+		images.Clear();
 	}
 }
