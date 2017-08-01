@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using VGPrompter;
 using UnityEngine.UI;
+using KirinoEngine;
+using KirinoEngine.VNCore;
 
 public class KirinoExample : MonoBehaviour {
 

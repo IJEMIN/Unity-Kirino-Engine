@@ -2,88 +2,91 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class FadeManager : MonoBehaviour
+namespace KirinoEngine
 {
-
-    public CanvasGroup fadeHolder;
-
-    public float fadeTime = 1.0f;
-
-    public bool isFading
+    public class FadeManager : MonoBehaviour
     {
-        get;
-        private set;
-    }
 
+        public CanvasGroup fadeHolder;
 
-    public void FadeIn()
-    {
-        StartCoroutine("BlackFadeIn");
-    }
+        public float fadeTime = 1.0f;
 
-    public void FadeOut()
-    {
-        StartCoroutine("BlackFadeOut");
-    }
-
-
-    private IEnumerator BlackFadeIn()
-    {
-        fadeHolder.blocksRaycasts = true;
-
-
-        StopCoroutine("BlackFadeOut");
-
-        fadeHolder.alpha = 1.0f;
-
-        float currentTime = Time.time;
-
-        while (currentTime + fadeTime > Time.time)
+        public bool isFading
         {
-
-            fadeHolder.alpha -= (Time.deltaTime / fadeTime);
-
-
-            yield return null;
+            get;
+            private set;
         }
 
-        fadeHolder.alpha = 0.0f;
-        fadeHolder.blocksRaycasts = false;
-        /*
-		if(VNEpisode.currentEpisode)
-		{
-			VNEpisode.currentEpisode.InvokeCommand();
-		}
-		*/
-    }
 
-    private IEnumerator BlackFadeOut()
-    {
-        fadeHolder.blocksRaycasts = true;
-
-
-        StopCoroutine("BlackFadeIn");
-
-
-
-        fadeHolder.alpha = 0.0f;
-
-        float currentTime = Time.time;
-
-        while (currentTime + fadeTime > Time.time)
+        public void FadeIn()
         {
-
-            fadeHolder.alpha += (Time.deltaTime / fadeTime);
-            yield return null;
+            StartCoroutine("BlackFadeIn");
         }
 
-        fadeHolder.alpha = 1.0f;
-        fadeHolder.blocksRaycasts = false;
-        /*
-		if(VNEpisode.currentEpisode)
-		{
-			VNEpisode.currentEpisode.InvokeCommand();
-		}
-		*/
+        public void FadeOut()
+        {
+            StartCoroutine("BlackFadeOut");
+        }
+
+
+        private IEnumerator BlackFadeIn()
+        {
+            fadeHolder.blocksRaycasts = true;
+
+
+            StopCoroutine("BlackFadeOut");
+
+            fadeHolder.alpha = 1.0f;
+
+            float currentTime = Time.time;
+
+            while (currentTime + fadeTime > Time.time)
+            {
+
+                fadeHolder.alpha -= (Time.deltaTime / fadeTime);
+
+
+                yield return null;
+            }
+
+            fadeHolder.alpha = 0.0f;
+            fadeHolder.blocksRaycasts = false;
+            /*
+    		if(VNEpisode.currentEpisode)
+    		{
+    			VNEpisode.currentEpisode.InvokeCommand();
+    		}
+    		*/
+        }
+
+        private IEnumerator BlackFadeOut()
+        {
+            fadeHolder.blocksRaycasts = true;
+
+
+            StopCoroutine("BlackFadeIn");
+
+
+
+            fadeHolder.alpha = 0.0f;
+
+            float currentTime = Time.time;
+
+            while (currentTime + fadeTime > Time.time)
+            {
+
+                fadeHolder.alpha += (Time.deltaTime / fadeTime);
+                yield return null;
+            }
+
+            fadeHolder.alpha = 1.0f;
+            fadeHolder.blocksRaycasts = false;
+            /*
+    		if(VNEpisode.currentEpisode)
+    		{
+    			VNEpisode.currentEpisode.InvokeCommand();
+    		}
+    		*/
+        }
     }
 }

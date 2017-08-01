@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VNShow : VNCommand {
+namespace KirinoEngine
+{
+    using VNCore;
 
-    public Displayable displayable;
-
-	public VNShow(Displayable displayable_)
-	{
-		displayable = displayable_;
-	}
-    public override void Invoke()
+    public class VNShow : VNCommand
     {
-        VNLocator.displayableDisplayer.Show(displayable);
-        VNLocator.currentEpisode.InvokeNextCommand();
+
+        public Displayable displayable;
+
+        public VNShow(Displayable displayable_)
+        {
+            displayable = displayable_;
+        }
+        public override void Invoke()
+        {
+            VNLocator.displayableDisplayer.Show(displayable);
+            VNLocator.currentEpisode.InvokeNextCommand();
+        }
     }
 }

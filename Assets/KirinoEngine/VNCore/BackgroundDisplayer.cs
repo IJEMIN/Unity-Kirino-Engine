@@ -4,82 +4,90 @@ using System.Collections;
 using System.Collections.Generic;
 using MyExtensions;
 
-public class BackgroundDisplayer : MonoBehaviour {
+namespace KirinoEngine
+{
+    using VNCore;
 
-	public float dissolveTime = 0.5f;
-	Image m_backgroundDisplayer;
+    public class BackgroundDisplayer : MonoBehaviour
+    {
 
-    // Enqueue `true` when a drawing coroutine starts,
-    // and dequeue when one ends.
-    private Queue<bool> currentDrawingRoutine = new Queue<bool>();
+        public float dissolveTime = 0.5f;
+        Image m_backgroundDisplayer;
 
-
-	public bool isChanging{
-		get;
-		private set;
-	}
-
-	void Awake () {
-		m_backgroundDisplayer = GetComponent<Image>();	
-	}
-
-	public void ChangeBackground(Sprite newBackground)
-	{
-		VNLocator.displayableDisplayer.HideAll();
-		VNLocator.textDisplayer.HideDialogueHolder();
+        // Enqueue `true` when a drawing coroutine starts,
+        // and dequeue when one ends.
+        private Queue<bool> currentDrawingRoutine = new Queue<bool>();
 
 
-        var prevImage = Instantiate(m_backgroundDisplayer, m_backgroundDisplayer.transform.parent);
-        prevImage.name += "_prev";
+        public bool isChanging
+        {
+            get;
+            private set;
+        }
 
-        m_backgroundDisplayer.sprite = newBackground;
+        void Awake()
+        {
+            m_backgroundDisplayer = GetComponent<Image>();
+        }
 
-        StartCoroutine("DissolveOutAndDestroy", prevImage);
-        StartCoroutine("DissolveIn", m_backgroundDisplayer);
-	}
+        public void ChangeBackground(Sprite newBackground)
+        {
+            VNLocator.displayableDisplayer.HideAll();
+            VNLocator.textDisplayer.HideDialogueHolder();
 
 
-	IEnumerator DissolveIn(Image image)
-	{
-		currentDrawingRoutine.Enqueue(true);
+            var prevImage = Instantiate(m_backgroundDisplayer, m_backgroundDisplayer.transform.parent);
+            prevImage.name += "_prev";
 
-		float alpha = 0.0f;
-		image.SetTransparency(alpha);
+            m_backgroundDisplayer.sprite = newBackground;
 
-		float startTime = Time.time;
+            StartCoroutine("DissolveOutAndDestroy", prevImage);
+            StartCoroutine("DissolveIn", m_backgroundDisplayer);
+        }
 
-		while (Time.time <= startTime + dissolveTime)
-		{
-			alpha += (Time.deltaTime / dissolveTime);
-			image.SetTransparency(alpha);
 
-			yield return null;
-		}
+        IEnumerator DissolveIn(Image image)
+        {
+            currentDrawingRoutine.Enqueue(true);
 
-		image.SetTransparency(1.0f);
+            float alpha = 0.0f;
+            image.SetTransparency(alpha);
 
-		currentDrawingRoutine.Dequeue();
-	}
+            float startTime = Time.time;
 
-	IEnumerator DissolveOutAndDestroy(Image image)
-	{
-		currentDrawingRoutine.Enqueue(true);
+            while (Time.time <= startTime + dissolveTime)
+            {
+                alpha += (Time.deltaTime / dissolveTime);
+                image.SetTransparency(alpha);
 
-		float alpha = 1.0f;
-		image.SetTransparency(alpha);
+                yield return null;
+            }
 
-		float startTime = Time.time;
+            image.SetTransparency(1.0f);
 
-		while (Time.time <= startTime + dissolveTime)
-		{
-			alpha -= (Time.deltaTime / dissolveTime);
-			image.SetTransparency(alpha);
+            currentDrawingRoutine.Dequeue();
+        }
 
-			yield return null;
-		}
+        IEnumerator DissolveOutAndDestroy(Image image)
+        {
+            currentDrawingRoutine.Enqueue(true);
 
-		currentDrawingRoutine.Dequeue();
+            float alpha = 1.0f;
+            image.SetTransparency(alpha);
 
-		Destroy(image.gameObject);
-	}
+            float startTime = Time.time;
+
+            while (Time.time <= startTime + dissolveTime)
+            {
+                alpha -= (Time.deltaTime / dissolveTime);
+                image.SetTransparency(alpha);
+
+                yield return null;
+            }
+
+            currentDrawingRoutine.Dequeue();
+
+            Destroy(image.gameObject);
+        }
+    }
 }

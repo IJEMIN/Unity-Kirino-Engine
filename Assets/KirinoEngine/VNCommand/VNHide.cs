@@ -1,16 +1,22 @@
 ﻿
-public class VNHide : VNCommand {
+namespace KirinoEngine
+{
+    using VNCore;
 
-    public string tag;
-
-    public VNHide(string tag_)
+    public class VNHide : VNCommand
     {
-        tag = tag_;
-    }
 
-    public override void Invoke()
-    {
-        VNLocator.displayableDisplayer.Hide(tag);
-        VNLocator.currentEpisode.InvokeNextCommand();
+        public string tag;
+
+        public VNHide(string tag_)
+        {
+            tag = tag_;
+        }
+
+        public override void Invoke()
+        {
+            VNLocator.displayableDisplayer.Hide(tag);
+            VNLocator.currentEpisode.InvokeNextCommand();
+        }
     }
 }
