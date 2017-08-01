@@ -4,20 +4,22 @@ label start:
 
 
     show "kohaku_idle"
-
     "Hello, world."
 
     show "kohaku_smile"
-
     e "You've created a new Ren'Py game."
 
-    hide "kohaku"
+    show "kohaku_idle"
+    e "Face switching test"
 
-    e "I am the sword master"
+    hide "kohaku"
+    e "Hide Kohaku"
 
     show "misaki_idle"
+    misaki "Show Misaki"
 
-    "I am the best magician"
+    hide "misaki"
+    misaki "Hide Misaki"
 
     scene "bg_road"
 

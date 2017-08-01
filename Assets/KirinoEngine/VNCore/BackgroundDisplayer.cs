@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using MyExtensions;
 
 public class BackgroundDisplayer : MonoBehaviour {
 
-	public float dissolveSpeed = 1.0f;
+	public float dissolveTime = 0.5f;
 	Image m_backgroundDisplayer;
+
+    // Enqueue `true` when a drawing coroutine starts,
+    // and dequeue when one ends.
+    private Queue<bool> currentDrawingRoutine = new Queue<bool>();
+
 
 	public bool isChanging{
 		get;
@@ -21,39 +28,58 @@ public class BackgroundDisplayer : MonoBehaviour {
 		VNLocator.displayableDisplayer.HideAll();
 		VNLocator.textDisplayer.HideDialogueHolder();
 
-		StopCoroutine("SwitchBackgroundSprite");
-		StartCoroutine("SwitchBackgroundSprite",newBackground);
+
+        var prevImage = Instantiate(m_backgroundDisplayer, m_backgroundDisplayer.transform.parent);
+        prevImage.name += "_prev";
+
+        m_backgroundDisplayer.sprite = newBackground;
+
+        StartCoroutine("DissolveOutAndDestroy", prevImage);
+        StartCoroutine("DissolveIn", m_backgroundDisplayer);
 	}
 
-	private IEnumerator SwitchBackgroundSprite(Sprite newBackground)
+
+	IEnumerator DissolveIn(Image image)
 	{
-		isChanging = true;
+		currentDrawingRoutine.Enqueue(true);
 
-		var lastTimeCheck = Time.time;
-		var estimatedTime = 1.0f/dissolveSpeed;
+		float alpha = 0.0f;
+		image.SetTransparency(alpha);
 
-		while(lastTimeCheck + estimatedTime >= Time.time)
+		float startTime = Time.time;
+
+		while (Time.time <= startTime + dissolveTime)
 		{
-			var color = m_backgroundDisplayer.color;
-			color.a -= Time.deltaTime * dissolveSpeed;
-			m_backgroundDisplayer.color = color;
+			alpha += (Time.deltaTime / dissolveTime);
+			image.SetTransparency(alpha);
+
 			yield return null;
 		}
 
-		m_backgroundDisplayer.sprite = newBackground;
+		image.SetTransparency(1.0f);
 
-		lastTimeCheck = Time.time;
+		currentDrawingRoutine.Dequeue();
+	}
 
-		while(lastTimeCheck + estimatedTime >= Time.time)
+	IEnumerator DissolveOutAndDestroy(Image image)
+	{
+		currentDrawingRoutine.Enqueue(true);
+
+		float alpha = 1.0f;
+		image.SetTransparency(alpha);
+
+		float startTime = Time.time;
+
+		while (Time.time <= startTime + dissolveTime)
 		{
-			var color = m_backgroundDisplayer.color;
-			color.a += Time.deltaTime * dissolveSpeed;
-			m_backgroundDisplayer.color = color;
+			alpha -= (Time.deltaTime / dissolveTime);
+			image.SetTransparency(alpha);
+
 			yield return null;
 		}
-		
-		m_backgroundDisplayer.color = Color.white;
 
-		isChanging = false;
+		currentDrawingRoutine.Dequeue();
+
+		Destroy(image.gameObject);
 	}
 }

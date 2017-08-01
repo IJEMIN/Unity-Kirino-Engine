@@ -3,8 +3,16 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using MyExtensions;
 
 public class DisplayableDisplayer : MonoBehaviour {
+
+    public float dissolveTime = 0.5f;
+
+    // Enqueue `true` when a drawing coroutine starts,
+    // and dequeue when one ends.
+    private Queue<bool> currentDrawingRoutine = new Queue<bool>();
+
 
 	public CanvasGroup displayablesHolder;
 
@@ -52,31 +60,84 @@ public class DisplayableDisplayer : MonoBehaviour {
 		image.rectTransform.anchoredPosition = Vector2.zero;
 
         images.Add(tag, image);
+
+        StartCoroutine("DissolveIn", image);
 	}
 
 	private void ReplaceImage(string tag, Sprite sprite)
 	{
+        // prevImage is not inserted into images list.
+        var prevImage = Instantiate(images[tag], images[tag].transform.parent);
+        prevImage.name += "_prev";
+
 		images[tag].sprite = sprite;
+
+        StartCoroutine("DissolveOutAndDestroy", prevImage);
+        StartCoroutine("DissolveIn", images[tag]);
 	}
 
-	private IEnumerator Show()
-	{
-		yield return null;
-	}
+
 	public void Hide(string tag)
 	{
-		var target = images[tag].gameObject;
+        var targetImage = images[tag].GetComponent<Image>();
 		images.Remove(tag);
-		Destroy(target);
+
+        StartCoroutine("DissolveOutAndDestroy", targetImage);
 	}
 
 	public void HideAll()
 	{
 		foreach(var imageTag in images.Keys)
 		{
-			Destroy(images[imageTag].gameObject);
+            StartCoroutine("DissolveOutAndDestroy", images[imageTag]);
 		}
 
 		images.Clear();
 	}
+
+
+
+    IEnumerator DissolveIn(Image image)
+    {
+        currentDrawingRoutine.Enqueue(true);
+
+        float alpha = 0.0f;
+        image.SetTransparency(alpha);
+
+        float startTime = Time.time;
+
+        while (Time.time <= startTime + dissolveTime)
+        {
+            alpha += (Time.deltaTime / dissolveTime);
+            image.SetTransparency(alpha);
+
+            yield return null;
+        }
+
+        image.SetTransparency(1.0f);
+
+        currentDrawingRoutine.Dequeue();
+    }
+
+    IEnumerator DissolveOutAndDestroy(Image image)
+    {
+        currentDrawingRoutine.Enqueue(true);
+
+        float alpha = 1.0f;
+        image.SetTransparency(alpha);
+
+        float startTime = Time.time;
+
+        while (Time.time <= startTime + dissolveTime)
+        {
+            alpha -= (Time.deltaTime / dissolveTime);
+            image.SetTransparency(alpha);
+
+            yield return null;
+        }
+
+        currentDrawingRoutine.Dequeue();
+
+        Destroy(image.gameObject);
+    }
 }
