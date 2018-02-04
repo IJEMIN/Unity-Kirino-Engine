@@ -27,6 +27,27 @@ public class ScriptManager : MonoBehaviour {
         { "eu", new CharacterDisplayInfo("Eugenius", Color.green) }
     };
 
+    KeyValuePair<string, Action> GenerateAction(Dictionary<string, Action<string>> actions, string key, string parameter) {
+        return new KeyValuePair<string, Action>(key, () => actions[key](parameter));
+    }
+
+    readonly Dictionary<string, Color> Colors = new Dictionary<string, Color>() {
+        { "green", GREEN },
+        { "blue", Color.blue }
+    };
+
+    struct ActionParam {
+        //public string Name { get; private set; }
+        public string[] Parameters { get; private set; }
+        public Action<string> Action { get; private set; }
+
+        public ActionParam(string[] parameters, Action<string> action) : this() {
+            //Name = name;
+            Parameters = parameters;
+            Action = action;
+        }
+    }
+
     void Start() {
 
         cube = TheCube.GetComponent<TheCube>();
@@ -42,12 +63,17 @@ public class ScriptManager : MonoBehaviour {
         };
 
         var actions = new Dictionary<string, Action>() {
-            { "DoNothing", () => { } },
-            { "TurnCubeGreen", () => ChangeCubeColor(GREEN) },
-            { "TurnCubeBlue", () => ChangeCubeColor(Color.blue) }
+            { "DoNothing", () => { } }
         };
 
-        script.SetDelegates(conditions, actions);
+        var functions = new Dictionary<string, Delegate>() {
+            { "TurnCubeColor", (Action<string>)ChangeCubeColor },
+            { "SetString", (Action<Script, string, string>)SetString }
+        };
+
+        script.Conditions = conditions;
+        script.Actions = actions;
+        script.Functions = functions;
 
         script.Prime();
         script.Validate();
@@ -137,6 +163,15 @@ public class ScriptManager : MonoBehaviour {
 
     void ChangeCubeColor(Color color) {
         cube.CurrentColor = color;
+    }
+
+    void ChangeCubeColor(string color_name) {
+        Color color;
+        ChangeCubeColor(Colors.TryGetValue(color_name, out color) ? color : Color.black);
+    }
+
+    void SetString(Script script, string key, string value) {
+        script.Globals[key] = value;
     }
 
 }
