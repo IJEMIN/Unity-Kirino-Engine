@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class VNBackground : VNCommand
+namespace KirinoEngine
 {
-
-    public Displayable displayable;
-
-	public VNBackground(Displayable displayable_)
-	{
-		displayable = displayable_;
-	}
-    public override void Invoke()
+    public class VNBackground : VNCommand
     {
-        VNLocator.backgroundDisplayable.ChangeBackground(displayable.sprite);
-        VNLocator.currentEpisode.InvokeNextCommand();
+
+        public Displayable displayable;
+
+        public VNBackground(Displayable displayable_)
+        {
+            displayable = displayable_;
+        }
+        public override void Invoke()
+        {
+            VNController.backgroundDisplayable.ChangeBackground(displayable.sprite);
+        }
     }
 }
