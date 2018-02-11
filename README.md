@@ -25,20 +25,17 @@
 - 명령 스택의 커서를 다음으로 옮기기
 
 
+
 원래 이 프레임워크는 제가 [유니티로 만든 게임인 츤데레 아가씨](https://play.google.com/store/apps/details?id=com.applemint.deregirl&hl=ko)의 소스코드에 포함되어 있었습니다.
 
 제가 만든 게임 소스코드에서 비주얼 노벨 파트 부분을 따로 때어 라이브러리화 해서 공유하면 도움이 될것이라 생각했거든요.
 
-현재로서는 이 프레임워크의 스크립트 제어부가 제대로 동작하지 않습니다. 최적화를 위해 츤데레 아가씨 게임에 하드하게 커플링된 상태라 원본 게임에서 프레임워크를 디커플링 하는 작업을 계속 해야 합니다.
-
-당장 동작하는 것은
-- RPY 파일을 파싱
-- "scene" 키워드로 배경이미지 바꾸기
-  - 문법: scene "displayable_name"
-- 대사를 출력하고 클릭을 통해 순차적으로 다음 대사로 넘어가기
-  - 문법: character_name "hello my world!"
-
 RPY 스크립트 파싱을 위해서 [VGPrompter](https://github.com/eugeniusfox/vgprompter) 를 사용하고 있습니다.
+
+## 필수 사항
+
+모든 RPY 스크립트 파일은 Assets/RPY 경로에 있어야 합니다.
+모든 시리얼라이즈화 된 스크립트 파일은 Assets/StreamingAssets 에 저장되야 합니다.
 
 ## 문법 보기
 
@@ -82,14 +79,13 @@ Originally, I made this framework for [my game developed with Unity](https://pla
 
 Currenlty it's not fully functional yet because I need to decouple the framework from the game's source code.
 
-Operational for now...
-- Parse RPY
-- Change Background by "scene" keyword
-  - Syntax: scene "displayable_name"
-- Display and Move next dialogues by click
-  - Syntax: character_name "hello my world!"
 
 Using [VGPrompter](https://github.com/eugeniusfox/vgprompter) for parse RPY.
+
+## Pre-rquired
+
+All rpy scripts file must be stored in Assets/RPY.
+All serilized Scripts file must be stored in Assets/StreamingAssets.
 
 ## Kirino Engine Syntax
 
