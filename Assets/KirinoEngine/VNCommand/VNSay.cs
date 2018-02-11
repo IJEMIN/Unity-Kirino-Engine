@@ -21,6 +21,7 @@ namespace KirinoEngine
         }
         public override void Invoke()
         {
+            Debug.Log(dialogue);
             VNController.textDisplayer.SetSay(characterName, dialogue);
         }
     }

@@ -32,6 +32,7 @@ namespace KirinoEngine
         protected Script loadedScript;
 
         private IEnumerator scriptIterator;
+        private IEnumerator lineValidateIterator;
 
         // bool 을 리턴하는 함수를 넣는 곳. 참 거짓 평가가 필요한 키워드를 구현할때 쓴다.
         // 1. 단순하게 True False 가 이미 결정된 키워드를 넣는 방법
@@ -53,20 +54,25 @@ namespace KirinoEngine
         const string serializedScripFileName = "script.bin";
         const string serializedStringFileName = "string.csv";
 
+        const string editorRpyScriptsPath = "/RPY";
+
 
         // 경로에 있는 모든 스크립트를 가져와서 시리얼라이즈화 해주는 함수
         // 스크립트를 유니티 에디터에서 미리 파일로 시리얼라이즈 화를 먼저 해야 쓸수 있음
-        // 시리얼라이즈화 해서 저장할 장소와 로드할 장소 모두 스트리밍애셋패쓰를 사용하자
+        // 시리얼라이즈화 해서 저장할 장소는 스트리밍애셋 패쓰를 사용하자
+        // 시리얼라이즈화 안된 스크립트를 가져올 장소는 별개로 지정
         // 빌드시에 원본 스크립트는 나중에 따로 삭제하면 원본 스크립트 유출안될거임
         // 유니티 에디터상에서만 쓰는 함수
         public void SerializeScript()
         {
-            string dataPath = Application.streamingAssetsPath;
+            string dataPath = Application.dataPath + editorRpyScriptsPath;
 
             loadedScript = Script.FromSource(dataPath);
 
-            string scriptPath = Path.Combine(dataPath,serializedScripFileName);
-            string stringPath = Path.Combine(dataPath,serializedStringFileName);
+            string savePath = Application.streamingAssetsPath;
+
+            string scriptPath = Path.Combine(savePath,serializedScripFileName);
+            string stringPath = Path.Combine(savePath,serializedStringFileName);
 
             loadedScript.ToFiles(scriptPath, stringPath);
         }
@@ -85,6 +91,8 @@ namespace KirinoEngine
             // Deserialize
             loadedScript = Script.FromFiles(scriptPath, stringPath);
 
+            InitSyntax();
+
 			loadedScript.Conditions = conditions;
 			loadedScript.Actions = actions;
             loadedScript.Functions = functions;
@@ -97,19 +105,25 @@ namespace KirinoEngine
         void Awake()
         {
             LoadScript();
-			InitSyntax();
         }
 
 
         public void MoveNext()
         {
-            if(scriptIterator != null)
+            if(lineValidateIterator.MoveNext())
             {
-                scriptIterator.MoveNext();
+                StartCoroutine(lineValidateIterator.Current as IEnumerator);
             }
             else
             {
-                Debug.LogError("Script Iterator is not loaded yet");
+                if(scriptIterator.MoveNext())
+                {
+                    lineValidateIterator = scriptIterator.Current as IEnumerator;                   
+                }
+                else
+                {
+                    Debug.Log("End of Label");
+                }
             }
         }
 
@@ -152,8 +166,12 @@ namespace KirinoEngine
             isPlaying = true;
 
             scriptIterator = loadedScript.GetLabelEnumerator(labelName, OnLine, SelectChoice, OnChoiceSelected, OnReturn);
-		
+            scriptIterator.MoveNext();
+
+            lineValidateIterator = scriptIterator.Current as IEnumerator;
+
             MoveNext();
+            
         }
 
 
