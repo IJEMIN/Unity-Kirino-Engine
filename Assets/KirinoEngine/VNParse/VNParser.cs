@@ -91,7 +91,7 @@ namespace KirinoEngine
             // Deserialize
             loadedScript = Script.FromFiles(scriptPath, stringPath);
 
-            InitSyntax();
+
 
 			loadedScript.Conditions = conditions;
 			loadedScript.Actions = actions;
@@ -104,6 +104,7 @@ namespace KirinoEngine
 
         void Awake()
         {
+            InitSyntax();
             LoadScript();
         }
 
@@ -116,6 +117,7 @@ namespace KirinoEngine
             }
             else
             {
+                Debug.Log("End of Line");
                 if(scriptIterator.MoveNext())
                 {
                     lineValidateIterator = scriptIterator.Current as IEnumerator;                   
@@ -130,6 +132,7 @@ namespace KirinoEngine
         // 리턴을 만났을때
         protected virtual IEnumerator OnReturn()
         {
+            Debug.Log("Return");
             isPlaying = false;
 			VNController.textDisplayer.HideDialogueHolder();
             onReturn();
@@ -163,7 +166,10 @@ namespace KirinoEngine
         // 어떤 레이블에서 읽어내려가기를 시작
         public void Play(string labelName = "start")
         {
+            Debug.Log("Label Play: " + labelName);
             isPlaying = true;
+
+            LoadScript(); // 이터레이터가 리셋이 안되서, 일단은 다시 재로드하는 것으로.
 
             scriptIterator = loadedScript.GetLabelEnumerator(labelName, OnLine, SelectChoice, OnChoiceSelected, OnReturn);
             scriptIterator.MoveNext();
