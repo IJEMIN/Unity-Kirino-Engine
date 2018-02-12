@@ -29,3 +29,8 @@ sysinfo.txt
 *.apk
 *.unitypackage
 .DS_Store
+
+RPY/
+RPY.meta
+StreamingAssets/
+StreamingAssets.meta
