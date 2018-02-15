@@ -17,14 +17,14 @@ public class MenuDisplayer : MonoBehaviour
 
     private void Start()
     {
-        rayBlocker.raycastTarget = false;
+        rayBlocker.enabled = false;
         m_buttonPool = new SimpleObjectPool();
         m_buttonPool.prefab = selectionButtonPrefab;
     }
 
     public void RemoveAllSelections() {
 
-        rayBlocker.raycastTarget = false;
+        rayBlocker.enabled = false;
 
         while (0 < selectionButtons.Count)
         {
@@ -38,7 +38,7 @@ public class MenuDisplayer : MonoBehaviour
 	public void AddNewSelection(string choiceName,int index) 
     {
 
-        rayBlocker.raycastTarget = true;
+        rayBlocker.enabled = true;
 
         SelectionButton newSelectionButton = m_buttonPool.GetObject().GetComponent<SelectionButton>();
         newSelectionButton.Init(choiceName,index);

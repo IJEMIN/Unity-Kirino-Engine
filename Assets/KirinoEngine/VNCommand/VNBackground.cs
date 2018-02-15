@@ -14,7 +14,7 @@ namespace KirinoEngine
         }
         public override void Invoke()
         {
-            VNController.backgroundDisplayable.ChangeBackground(displayable.sprite);
+            VNController.backgroundDisplayable.ChangeBackground(displayable.mergedSprite);
         }
     }
 }

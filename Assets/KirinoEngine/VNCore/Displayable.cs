@@ -4,17 +4,33 @@ using UnityEngine;
 
 namespace KirinoEngine
 {
-    [CreateAssetMenu(fileName = "displayable", menuName = "Empty Displayable", order = 1)]
-    public class Displayable : ScriptableObject
+    [System.Serializable]
+    public class Displayable
     {
-        // key can't be duplicated
-        public string key { get { return name; } }
+        // name can be Duplicated
+        public string name;
 
-        // tag can be same throught many displayable
+        // diffrent tag with same name will replace older sprite
         public string tag;
+        public SpriteMerger.SpriteMapper[] sprites;
 
-        public Sprite sprite;
+        private Sprite m_mergedSprite = null;
 
-        public Vector2 size;
+        public Sprite mergedSprite{
+            get{
+                if(m_mergedSprite == null)
+                {
+                    m_mergedSprite = SpriteMerger.MergeSprite(sprites);
+                }
+                return m_mergedSprite;
+            }
+        }
+
+        public Vector2 size
+        {
+            get{
+                return new Vector2(mergedSprite.texture.width,mergedSprite.texture.height);
+            }
+        }
     }
 }

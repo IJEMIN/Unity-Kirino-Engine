@@ -17,17 +17,26 @@ namespace KirinoEngine
         public List<Displayable> displayables;
         public List<AudioClip> audioClips;
 
-        public Displayable GetDisplayable(string key)
+        void Awake()
+        {
+            foreach(var displayable in displayables)
+            {
+                // 실시간으로 머지하면 성능 소모가 심하니 미리 하기
+                Debug.Log(displayable.mergedSprite);
+            }
+        }
+
+        public Displayable GetDisplayable(string displayableName, string displayableTag)
         {
             foreach (Displayable displayable in displayables)
             {
-                if (displayable.key == key)
+                if (displayable.name == displayableName && displayable.tag == displayableTag)
                 {
                     return displayable;
                 }
             }
 
-            Debug.LogWarning(string.Format("There is no {0} displayble", key));
+            Debug.LogWarning(string.Format("{0} {1} displayble wasn't imported", name,tag));
             return null;
         }
 

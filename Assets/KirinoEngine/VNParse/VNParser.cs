@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Text;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace KirinoEngine
 {
@@ -234,14 +235,17 @@ namespace KirinoEngine
         {
             AudioClip clip;
 
+            // 공백 자르기
+            string[] words = Regex.Split(line.Text,"\\s+");
+
             switch (line.Tag)
             {
                 case syntax_background:
-                    new VNBackground(VNDataController.Instance.GetDisplayable(line.Text)).Invoke();
+                    new VNBackground(VNDataController.Instance.GetDisplayable(words[0],words[1])).Invoke();
                     break;
 
                 case syntax_show:
-                    new VNShow(VNDataController.Instance.GetDisplayable(line.Text)).Invoke();
+                    new VNShow(VNDataController.Instance.GetDisplayable(words[0],words[1])).Invoke();
                     break;
                 case syntax_hide:
                     new VNHide(line.Text).Invoke();

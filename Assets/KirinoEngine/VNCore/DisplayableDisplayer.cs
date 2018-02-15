@@ -12,121 +12,85 @@ namespace KirinoEngine
 
         [Header("Options")]
         public float dissolveTime = 0.5f;
-        public Vector2 faceFrontPosition; // Maid Girl Feature
-        public Vector2 faceSidePosition; // Maid Girl Feature
 
         // Enqueue `true` when a drawing coroutine starts,
         // and dequeue when one ends.
         private Queue<bool> currentDrawingRoutine = new Queue<bool>();
 
         [Header("References")]
-        public CanvasGroup displayablesHolder;
+        public Transform displayablesHolder;
 
-        // key: displayable unique (it automatically defined as filename)
-        // tag: tag define shared base between many displayable.
-
-        // Replace exist image (mostly for face replacing) require both key and tag
+        // name and tag
+        // usage::  Replace exist image (for various faces of same character) require both name and tag
+        // name can be same, tag can't be same between images.
 
         // exampale:
-        // tag: kirino, key: kirino_angry  and tag: kirino, key: kirino_happy
-        // show kirino_happy will replace kirino_angry (if it alreay exists);
+        // first sprite 'kirino angry':: name: kirino, tag: angry
+        // second sprite 'kirino happy':: name: kirino, tag: happy
 
-        // Replaceing only happening between images which have same tag with diffrent key
+        // situation: 'kirino angry' is alreay displayed
+        // => show kirino happy will replace kirino angry
 
-        // dic key : tag of displayable
+        // Replaceing only happening between images which have same name with diffrent tag
         public Dictionary<string, Image> images = new Dictionary<string, Image>();
 
         public void Show(Displayable displayable)
         {
-            // if tag is not defined, use key as tag
-            if (string.IsNullOrEmpty(displayable.tag))
+            // 만약 이미 같은 이름의 디스플레이어블이 그려져 있다면
+            if(images.ContainsKey(displayable.name))
             {
-                AddImage(displayable.key, displayable.sprite,displayable.size);
-                return;
+                ReplaceImage(displayable);
             }
-
-            if (images.ContainsKey(displayable.tag))
+            else // 같은 이름의 디스플레이어블이 없다면
             {
-                ReplaceImage(displayable.tag, displayable.sprite);
-            }
-            else
-            {
-                AddImage(displayable.tag, displayable.sprite,displayable.size);
+                AddImage(displayable);
             }
         }
 
-        private void AddImage(string tag, Sprite sprite, Vector2 newSize)
+        private void AddImage(Displayable displayable)
         {
-            var image = new GameObject(tag).AddComponent<Image>();
-            image.sprite = sprite;
-            image.transform.SetParent(displayablesHolder.transform);
+            var image = new GameObject(displayable.name).AddComponent<Image>();
+            image.sprite = displayable.mergedSprite;
+
+            image.transform.SetParent(displayablesHolder);
 
             image.transform.localScale = Vector3.one;
-            image.rectTransform.SetSize(newSize);
+            image.rectTransform.SetSize(displayable.size);
+
             image.rectTransform.anchoredPosition = Vector2.zero;
             image.preserveAspect = true;
 
-            // Set face position offset. Maid Girl Feature.
-            // Size setting is aleady in displayable, so don't manage it here.
-            if (tag == "Face")
-            {
-                if (sprite.name.Contains("front"))
-                {
-                    image.rectTransform.anchoredPosition = faceFrontPosition;    
-                }
-                else
-                {
-                    image.rectTransform.anchoredPosition = faceSidePosition;
-                }
-
-            }
-
-            images.Add(tag, image);
+            images.Add(displayable.name, image);
 
             StartCoroutine("DissolveIn", image);
         }
 
-        private void ReplaceImage(string tag, Sprite sprite)
+        private void ReplaceImage(Displayable displayable)
         {
             // prevImage is not inserted into images list.
-            var prevImage = Instantiate(images[tag], images[tag].transform.parent);
+            var prevImage = Instantiate(images[displayable.name], displayablesHolder);
             prevImage.name += "_prev";
 
             // Replace sprite in existing image component.
-            images[tag].sprite = sprite;
-
-
-			// Set face position offset. Maid Girl Feature.
-			// Size setting is aleady in displayable, so don't manage it here.
-			if (tag == "Face")
-			{
-				if (sprite.name.Contains("front"))
-				{
-					images[tag].rectTransform.anchoredPosition = faceFrontPosition;
-				}
-				else
-				{
-					images[tag].rectTransform.anchoredPosition = faceSidePosition;
-				}
-			}
+            images[displayable.name].sprite = displayable.mergedSprite;
 
             StartCoroutine("DissolveOutAndDestroy", prevImage);
-            StartCoroutine("DissolveIn", images[tag]);
+            StartCoroutine("DissolveIn", images[displayable.name]);
         }
 
-        public void Hide(string tag)
+        public void Hide(string displayableName)
         {
-            var targetImage = images[tag].GetComponent<Image>();
-            images.Remove(tag);
+            var targetImage = images[displayableName].GetComponent<Image>();
+            images.Remove(displayableName);
 
             StartCoroutine("DissolveOutAndDestroy", targetImage);
         }
 
         public void HideAll()
         {
-            foreach (var imageTag in images.Keys)
+            foreach (var displayableName in images.Keys)
             {
-                StartCoroutine("DissolveOutAndDestroy", images[imageTag]);
+                StartCoroutine("DissolveOutAndDestroy", images[displayableName]);
             }
 
             images.Clear();
