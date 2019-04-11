@@ -15,7 +15,7 @@ namespace KirinoEngine {
 			}
 
 
-			VNController.parser.MoveNext();
+//			VNController.parser.MoveNext();
 		}
 	}
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VGPrompter;
 using UnityEngine.UI;
 using System.Text;
 using System;
@@ -10,6 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace KirinoEngine
 {
+/*
 
     public class VNParser : MonoBehaviour
     {
@@ -277,4 +277,5 @@ namespace KirinoEngine
             yield return null;
         }
     }
+    */
 }

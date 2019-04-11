@@ -64,18 +64,6 @@ namespace KirinoEngine
             }
         }
 
-        private static VNParser m_parser;
-        public static VNParser parser
-        {
-            get
-            {
-                if (!m_parser)
-                {
-                    m_parser = GameObject.FindObjectOfType<VNParser>();
-                }
-                return m_parser;
-            }
-        }
 
         private static MenuDisplayer m_menuDisplayer;
 		public static MenuDisplayer menuDisplayer

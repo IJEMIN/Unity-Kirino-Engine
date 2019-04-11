@@ -4,9 +4,10 @@ using KirinoEngine;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(VNParser))]
+//[CustomEditor(typeof(VNParser))]
 public class VNParserEditor : Editor
 {   
+    /*
     
     VNParser editTarget;
     void OnEnable()
@@ -23,4 +24,6 @@ public class VNParserEditor : Editor
 
         DrawDefaultInspector();
     }
+    */
 }
+
