@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using KirinoEngine;
 using UnityEngine;
 
 public class Demo : MonoBehaviour
 {
-    private Stack<VNCommand> commandStack = new Stack<VNCommand>();
+    private List<VNCommand> commandStack = new List<VNCommand>();
+    private IEnumerator<VNCommand> interator;
 
     public Sprite[] demoBackgroundSprites;
     public Sprite kirinoSprite;
@@ -20,28 +22,31 @@ public class Demo : MonoBehaviour
         kiririnDisplayable.spriteMappers.Add(new SpriteMapper {pos = Vector2.zero, size = new Vector2(603,1024), 
         sprite =  kirinoSprite});
         
+        commandStack.Add(new VNSay("Kiriring","Heloo!!!"));
         
-        commandStack.Push(new VNBackground(demoBackgroundSprites[0]));
+        commandStack.Add(new VNBackground(demoBackgroundSprites[0]));
 
-        commandStack.Push(new VNSay("Kriring","Hi!"));
-        commandStack.Push(new VNShow(kiririnDisplayable));
-        commandStack.Push(new VNSay("Kriring","THis is Demo of Kirino Engine!"));
+        commandStack.Add(new VNSay("Kriring","Hi!"));
+        commandStack.Add(new VNShow(kiririnDisplayable));
+        commandStack.Add(new VNSay("Kriring","THis is Demo of Kirino Engine!"));
 
 
-        commandStack.Push(new VNSay("Kriring","Kirino Engine provide many Core Manager"));
-        commandStack.Push(new VNSay("Kriring","Which you can control by stacking VNCommand or Manually calling it's own method within Cores"));
+        commandStack.Add(new VNSay("Kriring","Kirino Engine provide many Core Manager"));
+        commandStack.Add(new VNSay("Kriring","Which you can control by stacking VNCommand or Manually calling it's own method within Cores"));
         
         
-        commandStack.Push(new VNBackground(demoBackgroundSprites[1]));
-        commandStack.Push(new VNSay("Kriring","Please Check demo script"));
-        commandStack.Push(new VNSay("Kriring","Kirino Engine only provides functions -not script functions to call kirino function"));
-        commandStack.Push(new VNSay("Kriring","that means you have to make your own parser to implement 'delayed call'"));
+        commandStack.Add(new VNBackground(demoBackgroundSprites[1]));
+        commandStack.Add(new VNSay("Kriring","Please Check demo script"));
+        commandStack.Add(new VNSay("Kriring","Kirino Engine only provides functions -not script functions to call kirino function"));
+        commandStack.Add(new VNSay("Kriring","that means you have to make your own parser to implement 'delayed call'"));
+
+        interator = commandStack.GetEnumerator();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && commandStack.Count > 0)
+        if (Input.GetMouseButtonDown(0))
         {
             if (VNController.backgroundDisplayer.IsDrawing || VNController.displayableDisplayer.isDrawing)
             {
@@ -55,8 +60,15 @@ public class Demo : MonoBehaviour
                 return;
             }
 
+            if (interator.MoveNext())
+            {
+                interator.Current.Invoke();
+            }
+            else
+            {
+                interator.Reset();
 
-            commandStack.Pop().Invoke();
+            }
         }
     }
 }
