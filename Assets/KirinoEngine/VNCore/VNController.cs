@@ -1,83 +1,70 @@
-﻿﻿using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 
-namespace KirinoEngine
-{
+namespace KirinoEngine {
+    public static class VNController {
 
-    public static class VNController
-    {
         private static TextDisplayer m_textDisplayer;
+
+        private static AudioManager m_audioManager;
+
+
+        private static DisplayableDisplayer m_displayableDisplayer;
+
+
+        private static BackgroundDisplayer m_backgroundDisplayer;
+
+
+        private static MenuDisplayer m_menuDisplayer;
+
+
         public static TextDisplayer textDisplayer
         {
             get
             {
-                if (!m_textDisplayer)
-                {
-                    m_textDisplayer = GameObject.FindObjectOfType<TextDisplayer>();
-                }
+                if (!m_textDisplayer) m_textDisplayer = Object.FindObjectOfType<TextDisplayer>();
 
                 return m_textDisplayer;
             }
         }
 
-        private static AudioManager m_audioManager;
         public static AudioManager audioManager
         {
             get
             {
-                if (!m_audioManager)
-                {
-                    m_audioManager = GameObject.FindObjectOfType<AudioManager>();
-                }
+                if (!m_audioManager) m_audioManager = Object.FindObjectOfType<AudioManager>();
 
                 return m_audioManager;
             }
         }
 
-
-
-
-        private static DisplayableDisplayer m_displayableDisplayer;
         public static DisplayableDisplayer displayableDisplayer
         {
             get
             {
-                if (!m_displayableDisplayer)
-                {
-                    m_displayableDisplayer = GameObject.FindObjectOfType<DisplayableDisplayer>();
-                }
+                if (!m_displayableDisplayer) m_displayableDisplayer = Object.FindObjectOfType<DisplayableDisplayer>();
                 return m_displayableDisplayer;
             }
         }
 
-
-        private static BackgroundDisplayer m_backgroundDisplayable;
-        public static BackgroundDisplayer backgroundDisplayable
+        public static BackgroundDisplayer backgroundDisplayer
         {
             get
             {
-                if (!m_backgroundDisplayable)
-                {
-                    m_backgroundDisplayable = GameObject.FindObjectOfType<BackgroundDisplayer>();
-                }
-                return m_backgroundDisplayable;
+                if (!m_backgroundDisplayer) m_backgroundDisplayer = Object.FindObjectOfType<BackgroundDisplayer>();
+                return m_backgroundDisplayer;
             }
         }
 
 
-        private static MenuDisplayer m_menuDisplayer;
-		public static MenuDisplayer menuDisplayer
-		{
-			get
-			{
-				if (!m_menuDisplayer)
-				{
-					m_menuDisplayer = GameObject.FindObjectOfType<MenuDisplayer>();
-				}
-				return m_menuDisplayer;
-			}
-		}
+        public static MenuDisplayer menuDisplayer
+        {
+            get
+            {
+                if (!m_menuDisplayer) m_menuDisplayer = Object.FindObjectOfType<MenuDisplayer>();
+                return m_menuDisplayer;
+            }
+        }
+
 
     }
-
 }

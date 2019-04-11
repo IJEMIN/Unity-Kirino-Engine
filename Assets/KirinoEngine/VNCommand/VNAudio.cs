@@ -15,7 +15,7 @@ namespace KirinoEngine
 
         public override void Invoke()
         {
-            VNController.audioManager.PlaySFX(clip);
+            VNController.audioManager.PlaySoundEffect(clip);
         }
 	}
 }

@@ -1,22 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace KirinoEngine
-{
+namespace KirinoEngine {
     public class VNVoice : VNCommand {
+        private readonly AudioClip clip;
 
-        AudioClip clip;
-
-        public VNVoice(string clipName)
-        {
-            clip = VNDataController.Instance.GetAudioClip(clipName);
+        public VNVoice(AudioClip newClip) {
+            clip = newClip;
         }
 
-        public override void Invoke()
-        {
+        public override void Invoke() {
             VNController.audioManager.PlayVoice(clip);
         }
     }
-
 }

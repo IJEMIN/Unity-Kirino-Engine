@@ -1,19 +1,13 @@
-﻿
-namespace KirinoEngine
-{
-    public class VNHide : VNCommand
-    {
+﻿namespace KirinoEngine {
+    public class VNHide : VNCommand {
+        public string displayableTag;
 
-        public string tag;
-
-        public VNHide(string tag_)
-        {
-            tag = tag_;
+        public VNHide(string _displayableTag) {
+            displayableTag = _displayableTag;
         }
 
-        public override void Invoke()
-        {
-            VNController.displayableDisplayer.Hide(tag);
+        public override void Invoke() {
+            VNController.displayableDisplayer.Hide(displayableTag);
         }
     }
 }

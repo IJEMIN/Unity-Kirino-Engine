@@ -1,35 +1,39 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KirinoEngine
-{
-    [System.Serializable]
-    public class Displayable
-    {
+namespace KirinoEngine {
+    [Serializable]
+    public class SpriteMapper {
+        //Left-Top Anchor and Pivot
+        public Vector2 pos = new Vector2(0, 0);
+
+        public Vector2 size = new Vector2(100, 100);
+        public Sprite sprite;
+    }
+
+    public class Displayable {
+        public Vector2 canvasSize;
+
         // name can be Duplicated
         public string name;
+        public Vector2 offset;
+
+        public List<SpriteMapper> spriteMappers = new List<SpriteMapper>();
 
         // diffrent tag with same name will replace older sprite
         public string tag;
-        public SpriteMerger.SpriteMapper[] sprites;
 
-        private Sprite m_mergedSprite = null;
 
-        public Sprite mergedSprite{
-            get{
-                if(m_mergedSprite == null)
-                {
-                    m_mergedSprite = SpriteMerger.MergeSprite(sprites);
-                }
-                return m_mergedSprite;
-            }
-        }
+        public void Resize(float percentage) {
+            canvasSize *= percentage;
 
-        public Vector2 size
-        {
-            get{
-                return new Vector2(mergedSprite.texture.width,mergedSprite.texture.height);
+            offset *= percentage;
+
+            foreach (var spriteMap in spriteMappers)
+            {
+                spriteMap.pos *= percentage;
+                spriteMap.size *= percentage;
             }
         }
     }

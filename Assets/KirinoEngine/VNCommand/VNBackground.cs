@@ -6,15 +6,15 @@ namespace KirinoEngine
     public class VNBackground : VNCommand
     {
 
-        public Displayable displayable;
+        public Sprite sprite;
 
-        public VNBackground(Displayable displayable_)
+        public VNBackground(Sprite sprite)
         {
-            displayable = displayable_;
+            this.sprite = sprite;
         }
         public override void Invoke()
         {
-            VNController.backgroundDisplayable.ChangeBackground(displayable.mergedSprite);
+            VNController.backgroundDisplayer.ChangeBackground(sprite);
         }
     }
 }

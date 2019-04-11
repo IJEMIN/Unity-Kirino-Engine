@@ -1,36 +1,25 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
+using UnityEngine;
 
-namespace KirinoEngine
-{
-    public class FadeManager : MonoBehaviour
-    {
-
+namespace KirinoEngine {
+    public class FadeManager : MonoBehaviour {
         public CanvasGroup fadeHolder;
 
         public float fadeTime = 1.0f;
 
-        public bool isFading
-        {
-            get;
-            private set;
-        }
+        public bool isFading { get; private set; }
 
 
-        public void FadeIn()
-        {
+        public void FadeIn() {
             StartCoroutine("BlackFadeIn");
         }
 
-        public void FadeOut()
-        {
+        public void FadeOut() {
             StartCoroutine("BlackFadeOut");
         }
 
 
-        private IEnumerator BlackFadeIn()
-        {
+        private IEnumerator BlackFadeIn() {
             fadeHolder.blocksRaycasts = true;
 
 
@@ -38,12 +27,11 @@ namespace KirinoEngine
 
             fadeHolder.alpha = 1.0f;
 
-            float currentTime = Time.time;
+            var currentTime = Time.time;
 
             while (currentTime + fadeTime > Time.time)
             {
-
-                fadeHolder.alpha -= (Time.deltaTime / fadeTime);
+                fadeHolder.alpha -= Time.deltaTime / fadeTime;
 
 
                 yield return null;
@@ -53,8 +41,7 @@ namespace KirinoEngine
             fadeHolder.blocksRaycasts = false;
         }
 
-        private IEnumerator BlackFadeOut()
-        {
+        private IEnumerator BlackFadeOut() {
             fadeHolder.blocksRaycasts = true;
 
             StopCoroutine("BlackFadeIn");
@@ -62,12 +49,11 @@ namespace KirinoEngine
 
             fadeHolder.alpha = 0.0f;
 
-            float currentTime = Time.time;
+            var currentTime = Time.time;
 
             while (currentTime + fadeTime > Time.time)
             {
-
-                fadeHolder.alpha += (Time.deltaTime / fadeTime);
+                fadeHolder.alpha += Time.deltaTime / fadeTime;
                 yield return null;
             }
 

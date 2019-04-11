@@ -1,98 +1,80 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
-
-namespace KirinoEngine
-{
-    public class TextDisplayer : MonoBehaviour
-    {
-
-        [Range(0.0f, 1.0f)]
-        public float timeBetUpdateLetters;
-
-
-        public Text nameDisplayer;
-        public Text sayDisplayer;
-
+namespace KirinoEngine {
+    public class TextDisplayer : MonoBehaviour {
         public GameObject dialougeWindowHolder;
-
-
-        public bool isTyping
-        {
-            get; private set;
-        }
 
         private string m_currentTypingDialgoue;
 
-        public void ShowDialogueHolder()
-        {
+        public Text nameDisplayer;
+        public Text dialogueDisplayer;
+
+        [Range(0.0f, 1.0f)] public float timeBetUpdateLetters;
+
+        public bool isTyping { get; private set; }
+
+        private void Awake() {
+            HideDialogueHolder();
+        }
+
+        public void ShowDialogueHolder() {
             dialougeWindowHolder.SetActive(true);
         }
 
-        public void HideDialogueHolder()
-        {
+        public void HideDialogueHolder() {
             dialougeWindowHolder.SetActive(false);
         }
 
 
-
         //Skip and Complete Current Dialogues
-        public void SkipTypingLetter()
-        {
+        public void SkipTypingLetter() {
             StopCoroutine("TypeText");
             StopCoroutine("TypeAndAddText");
 
             isTyping = false;
 
-            sayDisplayer.text = m_currentTypingDialgoue;
+            dialogueDisplayer.text = m_currentTypingDialgoue;
         }
 
-
-        public void SetSay(string dialogue)
-        {
+        public void SetSay(string dialogue) {
             ShowDialogueHolder();
             m_currentTypingDialgoue = dialogue;
 
             if (timeBetUpdateLetters <= 0f)
-            {
-                sayDisplayer.text = dialogue;
-            }
+                dialogueDisplayer.text = dialogue;
             else
-            {
                 StartCoroutine("TypeText", m_currentTypingDialgoue);
-            }
         }
 
-        public void SetSay(string speakerName, string dialogue)
-        {
-			ShowDialogueHolder();
+        public void SetNameColor(Color nameColor) {
+            nameDisplayer.color = nameColor;
+        }
+
+        public virtual void SetSay(string speakerName, string dialogue) {
+            ShowDialogueHolder();
             nameDisplayer.text = speakerName;
             m_currentTypingDialgoue = dialogue;
 
             if (timeBetUpdateLetters <= 0f)
-            {
-                sayDisplayer.text = dialogue;
-            }
+                dialogueDisplayer.text = dialogue;
             else
-            {
                 StartCoroutine("TypeText", m_currentTypingDialgoue);
-            }
         }
 
 
         //Upddate Text from buffer
-        public IEnumerator TypeText(string texts)
-        {
+        public IEnumerator TypeText(string texts) {
             isTyping = true;
 
             ShowDialogueHolder();
 
-            sayDisplayer.text = string.Empty;
+            dialogueDisplayer.text = string.Empty;
 
-            foreach (char letter in texts.ToCharArray())
+            foreach (var letter in texts)
             {
-                sayDisplayer.text += letter;
+                dialogueDisplayer.text += letter;
                 yield return new WaitForSeconds(timeBetUpdateLetters);
             }
 
@@ -100,23 +82,18 @@ namespace KirinoEngine
         }
 
         // Add Text, not replace 
-        public IEnumerator TypeAndAddText(string texts)
-        {
+        public IEnumerator TypeAndAddText(string texts) {
             isTyping = true;
 
             ShowDialogueHolder();
 
-            foreach (char letter in texts.ToCharArray())
+            foreach (var letter in texts)
             {
-
-                sayDisplayer.text += letter;
+                dialogueDisplayer.text += letter;
                 yield return new WaitForSeconds(timeBetUpdateLetters);
-
             }
 
             isTyping = false;
         }
-
-
     }
 }
