@@ -21,9 +21,9 @@ public class Demo : MonoBehaviour
         
         kiririnDisplayable.spriteMappers.Add(new SpriteMapper {pos = Vector2.zero, size = new Vector2(603,1024), 
         sprite =  kirinoSprite});
-        
-        commandStack.Add(new VNSay("Kiriring","Heloo!!!"));
-        
+
+        commandStack.Add(new VNSay("Halooooooo"));
+                
         commandStack.Add(new VNBackground(demoBackgroundSprites[0]));
 
         commandStack.Add(new VNSay("Kriring","Hi!"));

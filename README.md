@@ -1,5 +1,7 @@
 # Unity Kirino Engine
 
+![demo](image.gif)
+
 Kirino Engine is framework for developing Visual Novel features in Unity3D.
 
 > Kirino Engine offer visual novel funtions to execute, but not offer how to call functions by external script.
