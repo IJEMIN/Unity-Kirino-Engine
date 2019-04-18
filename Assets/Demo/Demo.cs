@@ -29,6 +29,7 @@ public class Demo : MonoBehaviour
         commandStack.Add(new VNSay("Kriring","Hi!"));
         commandStack.Add(new VNShow(kiririnDisplayable));
         commandStack.Add(new VNSay("Kriring","THis is Demo of Kirino Engine!"));
+        commandStack.Add(new VNSwitch("intro"));
 
 
         commandStack.Add(new VNSay("Kriring","Kirino Engine provide many Core Manager"));
