@@ -8,18 +8,18 @@ namespace KirinoEngine
         public Dictionary<string, bool> Switch = new Dictionary<string, bool>();
         public void SwitchMaker(string SwitchName_)
         {
-            if (!Switch[SwitchName_])
+            try
             {
                 Switch.Add(SwitchName_, true);
-                Debug.Log(SwitchName_ + "생성");
+                Debug.Log(SwitchName_ + "생성됨");
             }
-            else if (Switch[SwitchName_])
+            catch(System.ArgumentException)
             {
-                Switch.Remove(SwitchName_);
-                Debug.Log(SwitchName_ + "삭제");
+                Debug.Log("그런키없음");
             }
         }
     }
 }
+
 
    

@@ -14,7 +14,7 @@ namespace KirinoEngine
         public override void Invoke()
         {
             VNController.gameSwitch.SwitchMaker(SwitchName);
-            Debug.Log(SwitchName);
+            //Debug.Log(SwitchName);
         }
     }
 }
