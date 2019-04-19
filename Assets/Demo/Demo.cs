@@ -31,16 +31,16 @@ public class Demo : MonoBehaviour
         commandStack.Add(new VNSay("Kriring","THis is Demo of Kirino Engine!"));
         commandStack.Add(new VNSwitch("intro"));
 
-
+        commandStack.Add(new VNSwitch("SwitchOffTest"));
         commandStack.Add(new VNSay("Kriring","Kirino Engine provide many Core Manager"));
         commandStack.Add(new VNSay("Kriring","Which you can control by stacking VNCommand or Manually calling it's own method within Cores"));
-        
+        commandStack.Add(new VNSwitch("SwitchOffTest"));
         
         commandStack.Add(new VNBackground(demoBackgroundSprites[1]));
         commandStack.Add(new VNSay("Kriring","Please Check demo script"));
         commandStack.Add(new VNSay("Kriring","Kirino Engine only provides functions -not script functions to call kirino function"));
         commandStack.Add(new VNSay("Kriring","that means you have to make your own parser to implement 'delayed call'"));
-
+        commandStack.Add(new VNSwitch("intro", "GOTOAnoterScene")); // When <intro> switch on Goto <GOTOAnoterScene>
         interator = commandStack.GetEnumerator();
     }
 
