@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace KirinoEngine {
-    public static class VNController {
+namespace KirinoEngine
+{
+    public static class VNController
+    {
 
         private static TextDisplayer m_textDisplayer;
 
@@ -15,6 +17,9 @@ namespace KirinoEngine {
 
 
         private static MenuDisplayer m_menuDisplayer;
+
+
+        private static GameSwitch m_gameswitch;
 
 
         public static TextDisplayer textDisplayer
@@ -65,6 +70,14 @@ namespace KirinoEngine {
             }
         }
 
+        public static GameSwitch gameSwitch
+        {
+            get
+            {
+                if (!m_gameswitch) m_gameswitch = Object.FindObjectOfType<GameSwitch>();
+                return m_gameswitch;
+            }
+        }
 
     }
 }
