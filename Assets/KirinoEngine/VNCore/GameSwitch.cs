@@ -8,40 +8,36 @@ namespace KirinoEngine
     {
         public string SwitchGoto;
         public static Dictionary<string, bool> Switch = new Dictionary<string, bool>();
+        public void SwitchCommander(string SwitchName_, bool SwitchStats_)
+        {
+            if (GameSwitch.Switch.ContainsKey(SwitchName_) && !SwitchStats_)
+            {
+                Switch.Remove(SwitchName_);
+                Debug.Log(string.Format("[{0}] Switch Off", SwitchName_));
+            }
+            else if (!GameSwitch.Switch.ContainsKey(SwitchName_) && SwitchStats_)
+            {
+                try
+                {
+                    Switch.Add(SwitchName_, true);
+                    Debug.Log(string.Format("[{0}] Switch ON", SwitchName_));
+                }
+                catch (System.ArgumentException)
+                {
+                    Debug.Log("Error");
+                }
+            }
+        }
         public void SwitchCommander(string SwitchName_, string SwitchGoto_)
         {
-            if(SwitchGoto_ != string.Empty)
+            if (GameSwitch.Switch.ContainsKey(SwitchName_))
             {
-                if(GameSwitch.Switch.ContainsKey(SwitchName_))
-                {
-                    SwitchGoto = SwitchGoto_;
-                    SceneManager.LoadScene(SwitchGoto);
-                }
-                else
-                {
-                    Debug.Log(string.Format("{0} is Not On",SwitchName_));
-                }
+                SceneManager.LoadScene(SwitchGoto_);
             }
             else
             {
-                if (GameSwitch.Switch.ContainsKey(SwitchName_))
-                {
-                    Switch.Remove(SwitchName_);
-                    Debug.Log(string.Format("[{0}] Switch Off",SwitchName_));
-                }
-                else
-                {
-                    try
-                    {
-                        Switch.Add(SwitchName_, true);
-                        Debug.Log(string.Format("[{0}] Switch ON", SwitchName_));
-                    }
-                    catch (System.ArgumentException)
-                    {
-                        Debug.Log("Error");
-                    }
-                }
-            }   
+                Debug.Log(string.Format("[{0}] Switch Not ON (Skipped)", SwitchName_));
+            }
         }
     }
 }

@@ -7,20 +7,15 @@ namespace KirinoEngine
     public class VNSwitch : VNCommand
     {
         public string SwitchName;
-        public string SwitchGoto;
-        public VNSwitch(string SwitchName_)
+        public bool SwitchStats;
+        public VNSwitch(string SwitchName_, bool SwitchStats_)
         {
-            SwitchGoto = string.Empty;
-            SwitchName = SwitchName_;
-        }
-        public VNSwitch(string SwitchName_, string SwitchGoto_)
-        {
-            SwitchGoto = SwitchGoto_;
+            SwitchStats = SwitchStats_;
             SwitchName = SwitchName_;
         }
         public override void Invoke()
         {
-            VNController.gameSwitch.SwitchCommander(SwitchName,SwitchGoto);
+            VNController.gameSwitch.SwitchCommander(SwitchName,SwitchStats);
             //Debug.Log(SwitchName);
         }
     }

@@ -25,7 +25,7 @@ public class SwitchDemo : MonoBehaviour
             size = new Vector2(603, 1024),
             sprite = kirinoSprite
         });
-        commandStack.Add(new VNSwitch("intro"));
+        commandStack.Add(new VNSwitch("intro",false));
         commandStack.Add(new VNSay("Kriring", "SwitchDemoDone"));
         commandStack.Add(new VNSay("Kriring", "That's All. :)"));
         commandStack.Add(new VNLoadScene("Demo"));
